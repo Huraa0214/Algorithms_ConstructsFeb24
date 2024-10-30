@@ -11,7 +11,7 @@ import java.util.*; // to call arraylist, scanner and random function
 // Handles the command-line interface and provides options for sorting,
 // searching, and generating employees from applicants.
 
-
+// GITHUB IS NOW LINKED
 /**
  *
  * @author air
