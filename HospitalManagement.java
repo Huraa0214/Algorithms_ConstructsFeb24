@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package ca_2;
+package ca_2.Untitled.Algorithms_ConstructsFeb24;
 
 import java.io.*; // to call file reader, buffered reader and its exceptions
 import java.util.*; // to call arraylist, scanner and random function
@@ -48,32 +48,26 @@ public class HospitalManagement {
         
         int choice; //variable to store user's choice 
         do {
-          //Display menu options 
-            System.out.println("\nMenu:");
-            System.out.println("(1) Sort Applicants");
-            System.out.println("(2) Search Applicants");
-            System.out.println("(3) Search Employees");
-            System.out.println("(4) Add new Employee");
-            System.out.println("(5) Generate Employee randomly");
-            System.out.println("(6) Display all employees");
-            System.out.println("(7) Exit");
+         // Integrated everything in one big menu 
+         // instead of having continious or tree-like menu 
+         displayMenu(); //method is defined below
             System.out.println("Please enter your choice: ");
             choice = scann.nextInt(); //capturing user's choice
-            scann.nextLine(); //clearing a new line that may be created when user hits the enter button
+            scann.nextLine(); //consuming a new line 
             
-            switch (choice) {
-                case 1:
+            switch (MenuOption.fromValue(choice)) {
+                case SORT_APPLICANTS:
                     //Calling a Quicksort method (recursive) on applicants names
-                    SortAndSearchAlgorithms.quickSort(applicantList, 0, applicantList.size()-1);
+                    MyAlgorithms.quickSortsortAndDisplayFirst20(applicantList); 
+                      //calling quick sort method from MyAlgorithms class, show first 20 feature is defined within
                     System.out.println("Applicants are sorted alphabetically");
-                    displayList(applicantList); //calling displayList method which limits by first 20 data
                     break;
                     
-                case 2:
+                case SEARCH_APPLICANTS:
                     //Calling a LinearSearch on applicants
                     System.out.println("Enter an applicants name you would like to search: ");
                     String applicantName = scann.nextLine();
-                    int applicantIndex = SortAndSearchAlgorthms.linearSearch(applicantList, applicantName);
+                    int applicantIndex = MyAlgorithms.linearSearch(applicantList, applicantName);
                     if (applicantIndex != -1) { //if there is such named applicant
                         System.out.println(applicantName + " found at index " + applicantIndex);
                     } else {
@@ -85,7 +79,7 @@ public class HospitalManagement {
                     //Call Linear Search on Employees
                     System.out.println("Enter an employee name to search: ");
                     String employeeName = scann.nextLine();
-                    int employeeIndex = SortandSearchAlgorithms.linearSearch(employeeList, employeeName);
+                    int employeeIndex = MyAlgorithms.linearSearch(employeeList, employeeName);
                     if (employeeIndex != -1) {
                         Employee foundEmployee = employeeList.get(employeeIndex);
                         System.out.println("Employee found: " + foundEmployee);
@@ -100,18 +94,19 @@ public class HospitalManagement {
                     //shiljuulehed applicanName-s hasagddag bol goy
                     addNewEmployee(scann); // uurchlunu
                     break;
-                    
+                    //this will be defined in Employees.java class 
                 case 5:
                     // new comment
                     // Generate employee randomly
                     generateEmployeeRandomly();
                     break;
-                    
+                    //also will be defined in Employees.java class 
                 case 6: 
                     // Display all employees
                     displayAllEmployees();
                     break;
-                
+                //also will be defined in Employees.java class 
+                //for the sake of clear structure and logic, every method related to employees are there 
                 case 7: 
                     //exit the menu
                     System.out.println("Exiting the programme...");
@@ -121,13 +116,11 @@ public class HospitalManagement {
                     System.out.println("Invalid choice, please try again.");
             }
             
-        } while (choice !=7);
-        
-        scann.close();
-                            
+        } while (choice != MenuOption.EXIT.getValue()); //as long as choice is not 7, iterates through menu 
+                          
         }
     
-    // Method to display the list of all the employees
+    // Method for display 
     
     private static void displayApplicants(List<String> applicantList) {
         //this method will display the first 20 applicants from applicants
