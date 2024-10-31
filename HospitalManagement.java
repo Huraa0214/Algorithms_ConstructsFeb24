@@ -75,8 +75,9 @@ public class HospitalManagement {
                     }
                     break;
                 
-                case 3:
+                case SEARCH_EMPLOYEE:
                     //Call Linear Search on Employees
+                    //RETURNS WITH THEIR CORRESPONDING ROLE AND DEPARTMENTS
                     System.out.println("Enter an employee name to search: ");
                     String employeeName = scann.nextLine();
                     int employeeIndex = MyAlgorithms.linearSearch(employeeList, employeeName);
@@ -89,25 +90,25 @@ public class HospitalManagement {
                     } 
                     break;
                     
-                case 4: 
-                    //Add new employee based on user input: // enen deer ug ni applicantName ees 1-iig hasaad employee bolgoj
-                    //shiljuulehed applicanName-s hasagddag bol goy
+                case ADD_EMPLOYEE: 
+                    //GIVE 2 OPTION, either add from appliants list or enter new employee
                     addNewEmployee(scann); // uurchlunu
                     break;
                     //this will be defined in Employees.java class 
-                case 5:
-                    // new comment
-                    // Generate employee randomly
-                    generateEmployeeRandomly();
+                case GENERATE_RANDOM_EMPLOYEE:
+                    // Generate employee randomly from applicants list
+                     Employee randomEmployee = Employee.generateRandomEmployee(applicantList);
+                    employeeList.add(randomEmployee);
+                    System.out.println("Randomly generated employee added: " + randomEmployee);
                     break;
-                    //also will be defined in Employees.java class 
-                case 6: 
+                    //also will be fully defined in Employees.java class 
+                case DISPLAY_EMPLOYEES: 
                     // Display all employees
                     displayAllEmployees();
                     break;
                 //also will be defined in Employees.java class 
                 //for the sake of clear structure and logic, every method related to employees are there 
-                case 7: 
+                case EXIT: 
                     //exit the menu
                     System.out.println("Exiting the programme...");
                     break;
@@ -122,12 +123,44 @@ public class HospitalManagement {
     
     // Method for display 
     
-    private static void displayApplicants(List<String> applicantList) {
-        //this method will display the first 20 applicants from applicants
-        
+    private static void displayMenu() {
+        //used above 
+        System.out.println("\nMenu: ");
+        for (MenuOption option : MenuOption.values()) {
+            // using enhanced for-each loop, option is a variable that takes on 
+            // the value of each MenuOption constant one at a time as the loop iterates over the array returned by values().
+            System.out.println("(" + option.getValue() + ")" + option.getDescription());
+        }
     }
+    
+    // Enum for the Menu
+    // Added integer value and description to make it appear user friendly 
+    // rather than all capital letters and underscore as its the convention
+    
+    private enum MenuOption {
+        SORT_APPLICANTS(1, "Sort Applicants"),
+        SEARCH_APPLICANTS(2, "Search Applicants"),
+        SEARCH_EMPLOYEES(3, "Search Employees"),
+        ADD_EMPLOYEE(4, "Add New Employee"),
+        GENERATE_RANDOM_EMPLOYEE(5, "Generate Employee Randomly"),
+        DISPLAY_EMPLOYEES(6, "Display All Employees"),
+        EXIT(7, "Exit");
+      
+        //fields to store values and descriptions
+        private final int value;
+        private final String description; 
+        
+        //constructor for enum constants 
+        MenuOption(int value, String description) {
+            this.value = value; //assign the value
+            this.description = description; //assign the description
+        }
+        
+        //getter method for the numeric value
         
         
+        
+    }   
        
         
           
