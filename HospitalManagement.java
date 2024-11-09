@@ -44,7 +44,10 @@ public class HospitalManagement {
         } catch (IOException e) {
             System.out.println("Sorry, error loading an applicant data.");
         // any issues with reading from file is handled
-        } 
+        } catch (Exception e) {
+            System.out.println("Sorry, invalid file content or format. Please try again.");
+            // for any other exceptions
+        }
         
         int choice; //variable to store user's choice 
         do {
@@ -57,12 +60,32 @@ public class HospitalManagement {
             
             switch (MenuOption.fromValue(choice)) {
                 case SORT_APPLICANTS:
-                    //Calling a Quicksort method (recursive) on applicants names
-                    MyAlgorithms.quickSortsortAndDisplayFirst20(applicantList); 
-                      //calling quick sort method from MyAlgorithms class, show first 20 feature is defined within
-                    System.out.println("Applicants are sorted alphabetically");
-                    break;
-                    
+                int sortOrder;
+                do {
+                    System.out.println("Choose sorting order:");
+                    System.out.println("(1) Ascending");
+                    System.out.println("(2) Descending");
+                    System.out.print("Enter choice (1 or 2): ");
+
+                    while (!scann.hasNextInt()) {  // Check for non-integer inputs
+                        System.out.println("Invalid input. Please enter 1 or 2.");
+                        System.out.print("Enter choice (1 or 2): ");
+                        scann.next(); // Consume invalid input
+                    }
+
+                    sortOrder = scann.nextInt();
+                    scann.nextLine(); // consume newline
+
+                    if (sortOrder != 1 && sortOrder != 2) {
+                        System.out.println("Invalid choice. Please enter 1 for Ascending or 2 for Descending.");
+                    }
+                } while (sortOrder != 1 && sortOrder != 2); // Repeat until valid input
+
+                boolean ascending = (sortOrder == 1);  // Set sorting order based on user choice
+                MyAlgorithms.quickSortsortAndDisplayFirst20(applicantList, ascending); 
+                System.out.println("Applicants have been sorted and the first 20 are displayed.");
+                break;
+
                 case SEARCH_APPLICANTS:
                     //Calling a LinearSearch on applicants
                     System.out.println("Enter an applicants name you would like to search: ");
@@ -75,7 +98,7 @@ public class HospitalManagement {
                     }
                     break;
                 
-                case SEARCH_EMPLOYEE:
+                case SEARCH_EMPLOYEES:
                     //Call Linear Search on Employees
                     //RETURNS WITH THEIR CORRESPONDING ROLE AND DEPARTMENTS
                     System.out.println("Enter an employee name to search: ");
@@ -121,7 +144,7 @@ public class HospitalManagement {
                           
         }
     
-    // Method for display 
+    // Method for display, private so no one can change the properties 
     
     private static void displayMenu() {
         //used above 
@@ -129,38 +152,49 @@ public class HospitalManagement {
         for (MenuOption option : MenuOption.values()) {
             // using enhanced for-each loop, option is a variable that takes on 
             // the value of each MenuOption constant one at a time as the loop iterates over the array returned by values().
-            System.out.println("(" + option.getValue() + ")" + option.getDescription());
+             System.out.println("(" + option.getValue() + ") " + option.name());
         }
-    }
+        }
+    
     
     // Enum for the Menu
     // Added integer value and description to make it appear user friendly 
     // rather than all capital letters and underscore as its the convention
     
     private enum MenuOption {
-        SORT_APPLICANTS(1, "Sort Applicants"),
-        SEARCH_APPLICANTS(2, "Search Applicants"),
-        SEARCH_EMPLOYEES(3, "Search Employees"),
-        ADD_EMPLOYEE(4, "Add New Employee"),
-        GENERATE_RANDOM_EMPLOYEE(5, "Generate Employee Randomly"),
-        DISPLAY_EMPLOYEES(6, "Display All Employees"),
-        EXIT(7, "Exit");
+        SORT_APPLICANTS(1),
+        SEARCH_APPLICANTS(2),
+        SEARCH_EMPLOYEES(3),
+        ADD_EMPLOYEE(4),
+        GENERATE_RANDOM_EMPLOYEE(5),
+        DISPLAY_EMPLOYEES(6),
+        EXIT(7);
       
-        //fields to store values and descriptions
         private final int value;
-        private final String description; 
+   
         
         //constructor for enum constants 
-        MenuOption(int value, String description) {
+        MenuOption(int value) {
             this.value = value; //assign the value
-            this.description = description; //assign the description
+            
         }
         
-        //getter method for the numeric value
+        //getter method for the numeric value, used in displayMenu
+        public int getValue(){
+            return value;
+        }
+       
         
-        
-        
-    }   
+         // Method to retrieve enum by its numeric value, used in switch-case
+    public static MenuOption fromValue(int value) {
+        for (MenuOption option : MenuOption.values()) {
+            if (option.getValue() == value) {
+                return option; // Return the matching enum constant
+            }
+        }
+        return null; // Return null if no match is found
+    }
+    }  
        
         
           
