@@ -54,30 +54,53 @@ public class Employee {
 
     // Here's the method to add new employee from scratch
     // Originally i wanted 
-public static void addNewEmployee(Scanner scann) {
-        System.out.println("Enter employee name: ");
+    public static void addNewEmployee(Scanner scann, List <Employee> list) {
+        System.out.println("Please enter employee name: ");
         String name = scann.nextLine();
 
-        System.out.println("Enter employee age: ");
+        System.out.println("Please enter employee age: ");
         int age = scann.nextInt();
         scann.nextLine(); 
 
-        System.out.println("Enter employee salary: ");
+        System.out.println("Please enter employee salary: ");
         double salary = scann.nextDouble();
         scann.nextLine(); 
 
-        System.out.println("Enter department (1. Emergency, 2. Cardiology, 3. Pediatrics, ...): ");
-        int departmentChoice = scann.nextInt();
-        Department department = Department.values()[departmentChoice - 1];
+        // If user enters different option than department options, 
+        // error is handled here, alongside with calling printoption from enums
+        Department department = null; 
+        Department.printOptions();
         
-        System.out.println("Enter manager type (1. Head Doctor, 2. Assistant Doctor, ...): ");
-        int managerChoice = scann.nextInt();
-        ManagerType managerType = ManagerType.values()[managerChoice - 1];
-
-        Employee newEmployee = new Employee(name, age, salary, department, managerType);
-        employeeList.add(newEmployee);
-        System.out.println("New employee added: " + newEmployee);
+        while (department == null) { //as long as there;s no valid department value is given yet
+        int departmentChoice = scann.nextInt();
+        scann.nextLine();
+        if (departmentChoice >= 1 && departmentChoice <= Department.values().length) {
+            department = Department.values()[departmentChoice - 1];
+        } else {
+            System.out.println("Invalid choice. Please enter a valid department number.");
+        }
     }
+
+    // Handle manager type choice
+        ManagerType managerType = null;
+        ManagerType.printOptions();
+        // preferable here rather than while (true) loop because it avoids infinite looping, 
+        // enhances readability, and doesn’t rely on break.
+        while (managerType == null) {
+        int managerChoice = scann.nextInt();
+        scann.nextLine();
+        if (managerChoice >= 1 && managerChoice <= ManagerType.values().length) {
+            managerType = ManagerType.values()[managerChoice - 1];
+        } else {
+            System.out.println("Invalid choice. Please enter a valid manager type number.");
+        }
+    }
+
+    // Create new employee and add to list
+    Employee newEmployee = new Employee(name, age, salary, department, managerType);
+    list.add(newEmployee);
+    System.out.println("New employee added: " + newEmployee);
+}
 
     private static void displayAllEmployees() {
         for (Employee employee : employeeList) {
