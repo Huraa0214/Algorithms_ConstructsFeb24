@@ -101,13 +101,58 @@ public class Employee {
     list.add(newEmployee);
     System.out.println("New employee added: " + newEmployee);
 }
+    // Method to create random employee from applicants list to populate the employee list
+    // Using HashSet to track already assigned department-manager combinations
+    // to avoid conflict with existing Manager types and Departments
+    private static Set<String> usedDepartmentManagerCombinations = new HashSet<>();
 
-    private static void displayAllEmployees() {
-        for (Employee employee : employeeList) {
-            employee.printEmployeeDetails();
-        }
+    public static Employee generateRandomEmployee(List<String> applicantList) {
+    // Check if there are any applicants left to choose from
+    if (applicantList.isEmpty()) {
+        System.out.println("No applicants left to generate.");
+        return null;  // Return null if no applicants are available
     }
+
+    // Select a random name from the applicants list
+    Random rand = new Random();
+    int randomIndex = rand.nextInt(applicantList.size());
+    String name = applicantList.get(randomIndex);
+
+    // Remove the selected applicant from the list since they are employees now
+    applicantList.remove(randomIndex);
+
+    // Randomly generate age between 22 and 60 (working standart)
+    int age = rand.nextInt(39) + 22;
+
+    // Randomly generate salary between 40,000 and 150,000 (Hospital salary range)
+    double salary = rand.nextInt(110000) + 40000;
     
+ // Generate a random department and manager type, avoiding duplicates
+        Department department = null; //start as null so they can be assigned meaningful values later,
+        ManagerType managerType = null;
+
+        // Loop until we find a unique department-manager combination
+        while (true) {
+            department = Department.values()[rand.nextInt(Department.values().length)];
+            managerType = ManagerType.values()[rand.nextInt(ManagerType.values().length)];
+
+            String combination = department + "-" + managerType;
+            if (!usedDepartmentManagerCombinations.contains(combination)) {
+                // Add the combination to the used set
+                usedDepartmentManagerCombinations.add(combination);
+                break;  // Exit the loop if the combination is unique
+            } else {
+                // If combination already used, try again
+                System.out.println("This role has been filled. Retrying...");
+            }
+        }
+
+        // Create and return the new employee
+        Employee newEmployee = new Employee(name, age, salary, department, managerType);
+        return newEmployee;
+    }
+
+
     
     
     
