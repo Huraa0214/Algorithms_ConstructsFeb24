@@ -10,11 +10,13 @@ package ca_2.Untitled.Algorithms_ConstructsFeb24;
  */
 import java.util.List;
 
+// In this file, I included one of the most efficient algorithm "Quick Sort" which is a recursive one 
+// And linear search on both applicants and employees 
+
 public class MyAlgorithms {
 
     // QuickSort implementation with sorting and displaying first 20 applicants
-    public static void quickSortsortAndDisplayFirst20(List<Applicant> applicantList, boolean ascending) {
-        // Sort the list using quicksort
+    public static void quickSortAndDisplayFirst20(List<String> applicantList, boolean ascending) {
         quickSort(applicantList, 0, applicantList.size() - 1, ascending);
 
         // Display the first 20 sorted applicants
@@ -23,62 +25,57 @@ public class MyAlgorithms {
             System.out.println(applicantList.get(i));
         }
     }
-
-    // QuickSort algorithm implemented manually with loops
-    private static void quickSort(List<Applicant> list, int low, int high, boolean ascending) {
-        if (low < high) {
+    // helper method for quickSort, aka "base case" for the recursion
+    // which ensures it continues only if there are two or more elements to sort
+    
+    private static void quickSort(List<String> list, int low, int high, boolean ascending) {
+        if (low < high) { //low being less than high means there is at least 2 elements
             int pivotIndex = partition(list, low, high, ascending);
             quickSort(list, low, pivotIndex - 1, ascending);  // Sort left side of pivot
             quickSort(list, pivotIndex + 1, high, ascending); // Sort right side of pivot
         }
     }
-
-    // Partition method for QuickSort
-    private static int partition(List<Applicant> list, int low, int high, boolean ascending) {
-        Applicant pivot = list.get(high);
+    
+    // Partition method for the quickSort
+    private static int partition(List<String> list, int low, int high, boolean ascending) {
+        String pivot = list.get(high);
         int i = low - 1;
         
         for (int j = low; j < high; j++) {
-            // Swap based on ascending or descending order
             if ((ascending && list.get(j).compareTo(pivot) < 0) ||
                 (!ascending && list.get(j).compareTo(pivot) > 0)) {
                 i++;
-                // Swapping elements
-                Applicant temp = list.get(i);
+                String temp = list.get(i);
                 list.set(i, list.get(j));
                 list.set(j, temp);
             }
         }
         
-        // Place pivot in the correct position
-        Applicant temp = list.get(i + 1);
+        String temp = list.get(i + 1);
         list.set(i + 1, list.get(high));
         list.set(high, temp);
         
         return i + 1;
     }
 
-    // Linear search implementation for applicants by name
-    public static int linearSearch(List<Applicant> applicantList, String applicantName) {
-        for (int i = 0; i < applicantList.size(); i++) {
-            if (applicantList.get(i).getName().equalsIgnoreCase(applicantName)) {
-                System.out.println("Applicant found at index: " + i);
-                return i; // Return the index of the applicant
-            }
+    
+    // Linear Search method to find an applicant in the list
+    public static int linearSearch(List<String> list, String target) {
+    for (int i = 0; i < list.size(); i++) {
+        if (list.get(i).equalsIgnoreCase(target)) {
+            return i; // Return the index if found
         }
-        System.out.println("Applicant not found.");
-        return -1; // Return -1 if not found
     }
+    return -1; // Return -1 if not found
+}
 
-    // Linear search implementation for employees by name
-    public static int linearSearch(List<Employee> employeeList, String employeeName) {
-        for (int i = 0; i < employeeList.size(); i++) {
-            if (employeeList.get(i).getName().equalsIgnoreCase(employeeName)) {
-                System.out.println("Employee found at index: " + i);
-                return i; // Return the index of the employee
-            }
+// Linear Search for Employees
+public static int linearSearchEmployees(List<Employee> list, String target) {
+    for (int i = 0; i < list.size(); i++) {
+        if (list.get(i).getName().equalsIgnoreCase(target)) {
+            return i; // Return the index if found
         }
-        System.out.println("Employee not found.");
-        return -1; // Return -1 if not found
     }
+    return -1; // Return -1 if not found
+}
 }

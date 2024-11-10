@@ -82,7 +82,7 @@ public class HospitalManagement {
                 } while (sortOrder != 1 && sortOrder != 2); // Repeat until valid input
 
                 boolean ascending = (sortOrder == 1);  // Set sorting order based on user choice
-                MyAlgorithms.quickSortsortAndDisplayFirst20(applicantList, ascending); 
+                MyAlgorithms.quickSortAndDisplayFirst20(applicantList, ascending); 
                 System.out.println("Applicants have been sorted and the first 20 are displayed.");
                 break;
 
@@ -103,7 +103,7 @@ public class HospitalManagement {
                     //RETURNS WITH THEIR CORRESPONDING ROLE AND DEPARTMENTS
                     System.out.println("Enter an employee name to search: ");
                     String employeeName = scann.nextLine();
-                    int employeeIndex = MyAlgorithms.linearSearch(employeeList, employeeName);
+                    int employeeIndex = MyAlgorithms.linearSearchEmployees(employeeList, employeeName);
                     if (employeeIndex != -1) {
                         Employee foundEmployee = employeeList.get(employeeIndex);
                         System.out.println("Employee found: " + foundEmployee);
@@ -115,7 +115,8 @@ public class HospitalManagement {
                     
                 case ADD_EMPLOYEE: 
                     //GIVE 2 OPTION, either add from appliants list or enter new employee
-                    addNewEmployee(scann); // uurchlunu
+                    //za teriigee zugeer yrichiidoo
+                    addNewEmployee(); // uurchlunu
                     break;
                     //this will be defined in Employees.java class 
                 case GENERATE_RANDOM_EMPLOYEE:

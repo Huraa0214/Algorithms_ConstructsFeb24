@@ -31,6 +31,29 @@ public class Employee {
         this.department = department;
         this.managerType = managerType;
     }
+    // Getter methods for employee attributes
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public ManagerType getManagerType() {
+        return managerType;
+    }
+
+    // Here's the method to add new employee from scratch
+    // Originally i wanted 
 public static void addNewEmployee(Scanner scann) {
         System.out.println("Enter employee name: ");
         String name = scann.nextLine();
