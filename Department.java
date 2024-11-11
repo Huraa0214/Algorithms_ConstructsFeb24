@@ -15,7 +15,22 @@ public enum Department {
     NEUROLOGY,
     ONCOLOGY,
     SURGERY,
-    NURSING;
+    NURSING,
+    ADMINISTRATION,;
+    
+    // Method to print all department options
+ // Much clearer and concise this way since error also must be handled
+
+    /**
+     *
+     */
+    
+    public static void printOptions() {
+        System.out.println("Please select a department:");
+        for (int i = 0; i < values().length; i++) {
+            System.out.println((i + 1) + ". " + values()[i].name());
+        }
+    }
 }
     
 

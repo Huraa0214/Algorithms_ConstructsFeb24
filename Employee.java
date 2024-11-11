@@ -31,6 +31,17 @@ public class Employee {
         this.department = department;
         this.managerType = managerType;
     }
+    
+        // Override to display a readable format when Employee instance is printed
+    
+            @Override
+        public String toString() {
+            return "Name: " + name +
+                   "\nAge: " + age +
+                   "\nSalary: " + salary +
+                   "\nDepartment: " + department +
+                   "\nManager Type: " + managerType + "\n";
+}
     // Getter methods for employee attributes
     public String getName() {
         return name;
@@ -151,17 +162,31 @@ public class Employee {
         Employee newEmployee = new Employee(name, age, salary, department, managerType);
         return newEmployee;
     }
-
-
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public static void displayAllEmployees(List<Employee> employeeList) {
+    if (employeeList.isEmpty()) {
+        System.out.println("No employees to display.");
+    } else {
+        System.out.println("\nEmployees List:");
+        for (Employee employee : employeeList) {
+            System.out.println(employee);
+            System.out.println("----------------------");
+        }
+    }
 }
+}
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+

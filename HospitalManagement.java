@@ -21,8 +21,8 @@ public class HospitalManagement {
     /**
      * @param args the command line arguments
      */
-    private static List<String> applicantList = new ArrayList<>(); // declaring and initializing List to store applicants from file
-    private static List<Employee> employeeList = new ArrayList<>(); // List to store employees
+    private static final List<String> applicantList = new ArrayList<>(); // declaring and initializing List to store applicants from file
+    private static final List<Employee> employeeList = new ArrayList<>(); // List to store employees
     //private and static to ensure the employees or applicants list remains accessible across methods while keeping encapsulation within HospitalManagement.
     
     public static void main(String[] args) {
@@ -60,7 +60,10 @@ public class HospitalManagement {
             
             switch (MenuOption.fromValue(choice)) {
                 case SORT_APPLICANTS:
+                // Ask the user for the sorting order (ascending or descending)
                 int sortOrder;
+                boolean ascending;
+
                 do {
                     System.out.println("Choose sorting order:");
                     System.out.println("(1) Ascending");
@@ -81,8 +84,10 @@ public class HospitalManagement {
                     }
                 } while (sortOrder != 1 && sortOrder != 2); // Repeat until valid input
 
-                boolean ascending = (sortOrder == 1);  // Set sorting order based on user choice
-                MyAlgorithms.quickSortAndDisplayFirst20(applicantList, ascending); 
+                ascending = (sortOrder == 1);  // Set sorting order based on user choice (true for ascending, false for descending)
+
+                // Call quickSortAndDisplayFirst20 with the determined sorting order
+                MyAlgorithms.quickSortAndDisplayFirst20(applicantList, ascending);
                 System.out.println("Applicants have been sorted and the first 20 are displayed.");
                 break;
 
@@ -91,12 +96,13 @@ public class HospitalManagement {
                     System.out.println("Enter an applicants name you would like to search: ");
                     String applicantName = scann.nextLine();
                     int applicantIndex = MyAlgorithms.linearSearch(applicantList, applicantName);
-                    if (applicantIndex != -1) { //if there is such named applicant
-                        System.out.println(applicantName + " found at index " + applicantIndex);
+                    if (applicantIndex != -1) { // If a match is found
+                        System.out.println("Applicant \"" + applicantName + "\" found at index " + applicantIndex + ":");
+                        System.out.println(applicantList.get(applicantIndex)); // Display full applicant name
                     } else {
-                        System.out.println(applicantName + "is not found. ");
+                        System.out.println("Applicant \"" + applicantName + "\" is not found.");
                     }
-                    break;
+                break;
                 
                 case SEARCH_EMPLOYEES:
                     //Call Linear Search on Employees
@@ -116,19 +122,20 @@ public class HospitalManagement {
                 case ADD_EMPLOYEE: 
                     //GIVE 2 OPTION, either add from appliants list or enter new employee
                     //za teriigee zugeer yrichiidoo
-                    addNewEmployee(); // uurchlunu
-                    break;
+                   Employee.addNewEmployee(scann, employeeList); // Pass employeeList to the method
                     //this will be defined in Employees.java class 
                 case GENERATE_RANDOM_EMPLOYEE:
                     // Generate employee randomly from applicants list
                      Employee randomEmployee = Employee.generateRandomEmployee(applicantList);
+                     if (randomEmployee != null) {
                     employeeList.add(randomEmployee);
                     System.out.println("Randomly generated employee added: " + randomEmployee);
+                     }
                     break;
-                    //also will be fully defined in Employees.java class 
+                    //defined in Employees.java class 
                 case DISPLAY_EMPLOYEES: 
                     // Display all employees
-                    displayAllEmployees();
+                    Employee.displayAllEmployees(employeeList);
                     break;
                 //also will be defined in Employees.java class 
                 //for the sake of clear structure and logic, every method related to employees are there 

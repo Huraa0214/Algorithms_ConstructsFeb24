@@ -8,7 +8,8 @@ package ca_2.Untitled.Algorithms_ConstructsFeb24;
  *
  * @author air
  */
-import java.util.List;
+import java.util.*;
+
 
 // In this file, I included one of the most efficient algorithm "Quick Sort" which is a recursive one 
 // And linear search on both applicants and employees 
@@ -16,7 +17,10 @@ import java.util.List;
 public class MyAlgorithms {
 
     // QuickSort implementation with sorting and displaying first 20 applicants
-    public static void quickSortAndDisplayFirst20(List<String> applicantList, boolean ascending) {
+    // both in ascending and descending order subject to choice
+    
+    public static void quickSortAndDisplayFirst20(List<String> applicantList, boolean ascending){
+        
         quickSort(applicantList, 0, applicantList.size() - 1, ascending);
 
         // Display the first 20 sorted applicants
@@ -60,22 +64,44 @@ public class MyAlgorithms {
 
     
     // Linear Search method to find an applicant in the list
-    public static int linearSearch(List<String> list, String target) {
-    for (int i = 0; i < list.size(); i++) {
-        if (list.get(i).equalsIgnoreCase(target)) {
-            return i; // Return the index if found
+    // User can enter only the first or last name and it can find it 
+    public static void linearSearch(List<String> applicants, String namePart) {
+    List<String> matchedApplicants = new ArrayList<>();  // List to store matching applicants
+    for (String applicantName : applicants) {
+        if (applicantName.toLowerCase().contains(namePart.toLowerCase())) {
+            matchedApplicants.add(applicantName); // Add matching names to the list
         }
     }
-    return -1; // Return -1 if not found
-}
+    
+    if (!matchedApplicants.isEmpty()) {
+        System.out.println("Found the following applicants matching \"" + namePart + "\":");
+        for (String matchedName : matchedApplicants) {
+            System.out.println(matchedName); // Print all matching names
+        }
+    } else {
+        System.out.println("No applicants found with the name \"" + namePart + "\".");
+    }
 
+    }
 // Linear Search for Employees
-public static int linearSearchEmployees(List<Employee> list, String target) {
-    for (int i = 0; i < list.size(); i++) {
-        if (list.get(i).getName().equalsIgnoreCase(target)) {
-            return i; // Return the index if found
+// Similarly compares in substring instead of whole name
+public static void linearSearchEmployees(List<Employee> employees, String namePart) {
+    List<Employee> matchedEmployees = new ArrayList<>();  // List to store matching employees
+    for (Employee employee : employees) {
+        String fullName = employee.getName();  // Assuming Employee class has a getName() method
+        
+        if (fullName.toLowerCase().contains(namePart.toLowerCase())) {
+            matchedEmployees.add(employee); // Add matching employees to the list
         }
     }
-    return -1; // Return -1 if not found
+    
+    if (!matchedEmployees.isEmpty()) {
+        System.out.println("Found the following employees matching \"" + namePart + "\":");
+        for (Employee matchedEmployee : matchedEmployees) {
+            System.out.println(matchedEmployee); // Print all matching employees
+        }
+    } else {
+        System.out.println("No employees found with the name \"" + namePart + "\".");
+    }
 }
 }
