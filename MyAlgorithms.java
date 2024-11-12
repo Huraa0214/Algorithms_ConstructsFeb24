@@ -74,12 +74,12 @@ public class MyAlgorithms {
     }
     
     if (!matchedApplicants.isEmpty()) {
-        System.out.println("Found the following applicants matching \"" + namePart + "\":");
+        System.out.println("Found the following applicants under the name \"" + namePart + "\":");
         for (String matchedName : matchedApplicants) {
             System.out.println(matchedName); // Print all matching names
         }
     } else {
-        System.out.println("No applicants found with the name \"" + namePart + "\".");
+        System.out.println("No applicants with the name \"" + namePart + "\" are found.");
     }
 
     }
@@ -96,12 +96,12 @@ public static void linearSearchEmployees(List<Employee> employees, String namePa
     }
     
     if (!matchedEmployees.isEmpty()) {
-        System.out.println("Found the following employees matching \"" + namePart + "\":");
+        System.out.println("Found the following employees under the name \"" + namePart + "\":");
         for (Employee matchedEmployee : matchedEmployees) {
             System.out.println(matchedEmployee); // Print all matching employees
         }
     } else {
         System.out.println("No employees found with the name \"" + namePart + "\".");
     }
-}
+}   
 }

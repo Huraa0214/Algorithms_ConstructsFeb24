@@ -92,38 +92,27 @@ public class HospitalManagement {
                 break;
 
                 case SEARCH_APPLICANTS:
-                    //Calling a LinearSearch on applicants
+                    //Calling a LinearSearch on applicants from MyAlgorithms
                     System.out.println("Enter an applicants name you would like to search: ");
                     String applicantName = scann.nextLine();
-                    int applicantIndex = MyAlgorithms.linearSearch(applicantList, applicantName);
-                    if (applicantIndex != -1) { // If a match is found
-                        System.out.println("Applicant \"" + applicantName + "\" found at index " + applicantIndex + ":");
-                        System.out.println(applicantList.get(applicantIndex)); // Display full applicant name
-                    } else {
-                        System.out.println("Applicant \"" + applicantName + "\" is not found.");
-                    }
-                break;
+                    MyAlgorithms.linearSearch(applicantList, applicantName);
+                    
+                    break;
                 
                 case SEARCH_EMPLOYEES:
-                    //Call Linear Search on Employees
-                    //RETURNS WITH THEIR CORRESPONDING ROLE AND DEPARTMENTS
-                    System.out.println("Enter an employee name to search: ");
-                    String employeeName = scann.nextLine();
-                    int employeeIndex = MyAlgorithms.linearSearchEmployees(employeeList, employeeName);
-                    if (employeeIndex != -1) {
-                        Employee foundEmployee = employeeList.get(employeeIndex);
-                        System.out.println("Employee found: " + foundEmployee);
-                        
-                    } else {
-                        System.out.println(employeeName + " is not found among the staffs. ");
-                    } 
-                    break;
+                    //Call Linear Search on Employees from MyAlgorithms
+                    //Return with their corresponding department and role
+                    
+                System.out.println("Enter an employee's name to search: ");
+                String employeeName = scann.nextLine();
+                MyAlgorithms.linearSearchEmployees(employeeList, employeeName); // Call the updated method
+                break;
                     
                 case ADD_EMPLOYEE: 
                     //GIVE 2 OPTION, either add from appliants list or enter new employee
                     //za teriigee zugeer yrichiidoo
                    Employee.addNewEmployee(scann, employeeList); // Pass employeeList to the method
-                    //this will be defined in Employees.java class 
+                    //defined in Employees.java class 
                 case GENERATE_RANDOM_EMPLOYEE:
                     // Generate employee randomly from applicants list
                      Employee randomEmployee = Employee.generateRandomEmployee(applicantList);
