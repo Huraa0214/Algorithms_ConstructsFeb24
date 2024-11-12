@@ -23,6 +23,7 @@ public class Employee {
     private Department department; // Changed to Department object
     private ManagerType managerType; // Changed to ManagerType object
     
+    
     // Constructor to initialize attributes
     public Employee(String name, int age, double salary, Department department, ManagerType managerType) {
         this.name = name;
@@ -42,6 +43,7 @@ public class Employee {
                    "\nDepartment: " + department +
                    "\nManager Type: " + managerType + "\n";
 }
+        
     // Getter methods for employee attributes
     public String getName() {
         return name;
@@ -62,20 +64,47 @@ public class Employee {
     public ManagerType getManagerType() {
         return managerType;
     }
-
+    // Using HashSet to track already assigned department-manager combinations on following 2 methods
+    // to avoid conflict with existing Manager types and Departments
+    
+     private static Set<String> usedDepartmentManagerCombinations = new HashSet<>();
+     
     // Here's the method to add new employee from scratch
-    // Originally i wanted 
+    // Originally i wanted to add option to either add new person or add from the Applicants list 
+    // But generating new employee is almost same as that, so i did not
+     
     public static void addNewEmployee(Scanner scann, List <Employee> list) {
         System.out.println("Please enter employee name: ");
         String name = scann.nextLine();
 
+        int age = 0;
+    while (true) {
         System.out.println("Please enter employee age: ");
-        int age = scann.nextInt();
-        scann.nextLine(); 
+        if (scann.hasNextInt()) {
+            age = scann.nextInt();
+            scann.nextLine(); // consume newline
+            if (age >= 18 && age <= 60) break; // Assume valid age range
+            else System.out.println("Please enter an age between 18 and 60.");
+        } else {
+            System.out.println("Invalid input. Please enter a numeric value for age.");
+            scann.next(); // consume invalid input
+        }
+    }
 
+    double salary = 0;
+    while (true) {
         System.out.println("Please enter employee salary: ");
-        double salary = scann.nextDouble();
-        scann.nextLine(); 
+        if (scann.hasNextDouble()) {
+            salary = scann.nextDouble();
+            scann.nextLine(); // consume newline
+            if (salary >= 40000 && salary <= 150000) break; // Assuming valid salary range
+            else System.out.println("Please enter a salary between 40,000 and 150,000.");
+        } else {
+            System.out.println("Invalid input. Please enter a numeric value for salary.");
+            scann.next(); // consume invalid input
+        }
+    }
+
 
         // If user enters different option than department options, 
         // error is handled here, alongside with calling printoption from enums
@@ -107,16 +136,19 @@ public class Employee {
         }
     }
 
-    // Create new employee and add to list
-    Employee newEmployee = new Employee(name, age, salary, department, managerType);
-    list.add(newEmployee);
-    System.out.println("New employee added: " + newEmployee);
-}
+    // Adding a new employee to the list only if the role is not occupied
+       String combination = department + "-" + managerType;
+        if (!usedDepartmentManagerCombinations.contains(combination)) {
+            usedDepartmentManagerCombinations.add(combination);
+            Employee newEmployee = new Employee(name, age, salary, department, managerType);
+            list.add(newEmployee);
+            System.out.println("New employee added: " + newEmployee);
+        } else {
+            System.out.println("Error: This role in the department is already filled.");
+        }
+    }
     // Method to create random employee from applicants list to populate the employee list
-    // Using HashSet to track already assigned department-manager combinations
-    // to avoid conflict with existing Manager types and Departments
-    private static Set<String> usedDepartmentManagerCombinations = new HashSet<>();
-
+   
     public static Employee generateRandomEmployee(List<String> applicantList) {
     // Check if there are any applicants left to choose from
     if (applicantList.isEmpty()) {
@@ -125,18 +157,18 @@ public class Employee {
     }
 
     // Select a random name from the applicants list
-    Random rand = new Random();
-    int randomIndex = rand.nextInt(applicantList.size());
+    Random randomm = new Random();
+    int randomIndex = randomm.nextInt(applicantList.size());
     String name = applicantList.get(randomIndex);
 
     // Remove the selected applicant from the list since they are employees now
     applicantList.remove(randomIndex);
 
     // Randomly generate age between 22 and 60 (working standart)
-    int age = rand.nextInt(39) + 22;
+    int age = randomm.nextInt(39) + 22;
 
     // Randomly generate salary between 40,000 and 150,000 (Hospital salary range)
-    double salary = rand.nextInt(110000) + 40000;
+    double salary = randomm.nextInt(110000) + 40000;
     
  // Generate a random department and manager type, avoiding duplicates
         Department department = null; //start as null so they can be assigned meaningful values later,
@@ -144,8 +176,8 @@ public class Employee {
 
         // Loop until we find a unique department-manager combination
         while (true) {
-            department = Department.values()[rand.nextInt(Department.values().length)];
-            managerType = ManagerType.values()[rand.nextInt(ManagerType.values().length)];
+            department = Department.values()[randomm.nextInt(Department.values().length)];
+            managerType = ManagerType.values()[randomm.nextInt(ManagerType.values().length)];
 
             String combination = department + "-" + managerType;
             if (!usedDepartmentManagerCombinations.contains(combination)) {
