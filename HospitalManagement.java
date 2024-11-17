@@ -113,13 +113,11 @@ public class HospitalManagement {
                     //za teriigee zugeer yrichiidoo
                    Employee.addNewEmployee(scann, employeeList); // Pass employeeList to the method
                     //defined in Employees.java class 
+                   break;
                 case GENERATE_RANDOM_EMPLOYEE:
                     // Generate employee randomly from applicants list
-                     Employee randomEmployee = Employee.generateRandomEmployee(applicantList);
-                     if (randomEmployee != null) {
-                    employeeList.add(randomEmployee);
-                    System.out.println("Randomly generated employee added: " + randomEmployee);
-                     }
+                     Employee.generateRandomEmployee(applicantList, employeeList, scann);
+                     
                     break;
                     //defined in Employees.java class 
                 case DISPLAY_EMPLOYEES: 

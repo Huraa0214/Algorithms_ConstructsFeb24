@@ -74,31 +74,52 @@ public class Employee {
     // But generating new employee is almost same as that, so i did not
      
     public static void addNewEmployee(Scanner scann, List <Employee> list) {
-        System.out.println("Please enter employee name: ");
-        String name = scann.nextLine();
+         String name = null;
+    boolean valid = false;
 
+    // Validate name to ensure it's alphabetic
+    while (!valid) {
+        System.out.println("Please enter employee name: ");
+        name = scann.nextLine();
+        
+        if (name.matches("[a-zA-Z ]+")) { // Ensures the name contains only letters and spaces
+            valid = true;
+        } else {
+            System.out.println("Invalid input. Please enter only alphabetic characters and spaces.");
+        }
+    }
+
+        //loop will run until user enters valid age
+        valid = false;
         int age = 0;
-    while (true) {
+    while (!valid) {
         System.out.println("Please enter employee age: ");
         if (scann.hasNextInt()) {
             age = scann.nextInt();
             scann.nextLine(); // consume newline
-            if (age >= 18 && age <= 60) break; // Assume valid age range
-            else System.out.println("Please enter an age between 18 and 60.");
+            if (age >= 18 && age <= 60) { // Assume valid working age 
+                valid = true;
+            } else {
+                System.out.println("Please enter an age between 18 and 60.");
+            }
         } else {
             System.out.println("Invalid input. Please enter a numeric value for age.");
             scann.next(); // consume invalid input
         }
     }
-
-    double salary = 0;
-    while (true) {
+    //loop will run until user enters valid age
+        valid = false;
+        double salary = 0;
+    while (!valid) {
         System.out.println("Please enter employee salary: ");
         if (scann.hasNextDouble()) {
             salary = scann.nextDouble();
             scann.nextLine(); // consume newline
-            if (salary >= 40000 && salary <= 150000) break; // Assuming valid salary range
-            else System.out.println("Please enter a salary between 40,000 and 150,000.");
+            if (salary >= 40000 && salary <= 150000) { // Assuming valid salary range
+                valid = true;
+            } else {
+                System.out.println("Please enter a salary between 40,000 and 150,000.");
+            }
         } else {
             System.out.println("Invalid input. Please enter a numeric value for salary.");
             scann.next(); // consume invalid input
@@ -149,11 +170,11 @@ public class Employee {
     }
     // Method to create random employee from applicants list to populate the employee list
    
-    public static Employee generateRandomEmployee(List<String> applicantList) {
+    public static void generateRandomEmployee(List<String> applicantList, List<Employee> employeeList, Scanner scanner) {
     // Check if there are any applicants left to choose from
     if (applicantList.isEmpty()) {
         System.out.println("No applicants left to generate.");
-        return null;  // Return null if no applicants are available
+        return;  // Return null if no applicants are available
     }
 
     // Select a random name from the applicants list
@@ -173,26 +194,42 @@ public class Employee {
  // Generate a random department and manager type, avoiding duplicates
         Department department = null; //start as null so they can be assigned meaningful values later,
         ManagerType managerType = null;
-
+        String combination;
         // Loop until we find a unique department-manager combination
-        while (true) {
+         do {
             department = Department.values()[randomm.nextInt(Department.values().length)];
             managerType = ManagerType.values()[randomm.nextInt(ManagerType.values().length)];
+            combination = department + "-" + managerType;
+        } while (usedDepartmentManagerCombinations.contains(combination));
 
-            String combination = department + "-" + managerType;
-            if (!usedDepartmentManagerCombinations.contains(combination)) {
-                // Add the combination to the used set
-                usedDepartmentManagerCombinations.add(combination);
-                break;  // Exit the loop if the combination is unique
+        usedDepartmentManagerCombinations.add(combination);
+        Employee newEmployee = new Employee(name, age, salary, department, managerType);
+
+        // Prompt the user to confirm if they want to add the generated employee
+        System.out.println("Generated Employee:\n" + newEmployee);
+        System.out.println("Do you want to add this employee to the list?");
+        System.out.println("(1) Yes");
+        System.out.println("(2) No");
+
+        int choice;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                if (choice == 1) {
+                    employeeList.add(newEmployee);
+                    System.out.println("Employee added successfully.");
+                    break;
+                } else if (choice == 2) {
+                    System.out.println("Employee not added.");
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter 1 or 2.");
+                }
             } else {
-                // If combination already used, try again
-                System.out.println("This role has been filled. Retrying...");
+                System.out.println("Invalid input. Please enter a valid option.");
+                scanner.next(); // Consume invalid input
             }
         }
-
-        // Create and return the new employee
-        Employee newEmployee = new Employee(name, age, salary, department, managerType);
-        return newEmployee;
     }
     
     public static void displayAllEmployees(List<Employee> employeeList) {
